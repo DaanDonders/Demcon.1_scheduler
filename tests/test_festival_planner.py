@@ -81,6 +81,28 @@ class TestFestivalPlanner(unittest.TestCase):
         self.assertEqual(len(stage_numbers), 3)
 
 
+    def test_plan_shows_unsorted_non_overlapping(self):
+        # Regression test: non-overlapping shows in reverse chronological order
+        shows = [
+            Show("B", 10, 20),
+            Show("A", 1, 5),
+        ]
+        stages = plan_shows(shows)
+        self.assertEqual(len(stages), 1)
+        self.assertEqual(shows[0].stage_number, stages[0].number)
+        self.assertEqual(shows[1].stage_number, stages[0].number)
+
+    def test_plan_shows_overlapping_assigned_different_stages(self):
+        # Overlapping shows must be assigned to different stages
+        shows = [
+            Show("show_1", 1, 10),
+            Show("show_2", 5, 15),
+        ]
+        stages = plan_shows(shows)
+        self.assertEqual(len(stages), 2)
+        self.assertNotEqual(shows[0].stage_number, shows[1].stage_number)
+
+
 if __name__ == "__main__":
     unittest.main()
 

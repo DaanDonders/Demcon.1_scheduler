@@ -7,10 +7,11 @@ def sort_shows(shows: list[Show]) -> list[Show]:
     return sorted(shows, key=lambda show: show.start_time)
 
 def plan_shows(shows: list[Show]) -> list[Stage]:
+    sorted_shows = sort_shows(shows)
     stages = []
     stage_number = 0
 
-    for show in shows:
+    for show in sorted_shows:
         if stages and show.start_time >= stages[0][0]:
             _, _, stage = heapq.heappop(stages)
 
